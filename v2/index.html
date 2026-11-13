@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>رحلاتي | سافر براحة</title>
+<meta name="description" content="رحلاتي: باقات سياحية للأفراد والعوائل داخل المملكة وخارجها بأسعار واضحة وبرنامج يومي جاهز.">
+<meta name="theme-color" content="#0B1F24">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Readex+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+/* ================= الألوان والإعدادات ================= */
+:root{
+  --night:#0B1F24;        /* خلفية داكنة */
+  --night-2:#12303A;
+  --primary:#0F5C63;
+  --teal:#3FB7AC;         /* لمسة فاتحة */
+  --accent:#E07A3F;       /* برتقالي الغروب */
+  --accent-deep:#B4541E;
+  --sand:#F4EDE3;
+  --bg:#FBF8F3;
+  --ink:#13232B;
+  --muted:#5C6B71;
+  --line:#E7DFD3;
+  --ease:cubic-bezier(.22,1,.36,1);
+  --ease-back:cubic-bezier(.34,1.56,.64,1);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:'IBM Plex Sans Arabic',system-ui,sans-serif;color:var(--ink);background:var(--bg);line-height:1.65;overflow-x:hidden}
+body.loading{overflow:hidden}
+h1,h2,h3{font-family:'Readex Pro',sans-serif;margin:0;line-height:1.25}
+a{color:inherit}
+img{max-width:100%;display:block}
+button,input,select{font:inherit}
+.container{max-width:1240px;margin:0 auto;padding:0 24px}
+.icon{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+:focus-visible{outline:2px solid var(--teal);outline-offset:3px;border-radius:6px}
+
+/* ================= شاشة البداية ================= */
+.intro{position:fixed;inset:0;z-index:200;background:var(--night);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:18px;transition:clip-path 1s var(--ease)}
+.intro.done{clip-path:inset(0 0 100% 0)}
+.intro svg{width:120px;height:60px}
+.intro .trail{stroke:var(--teal);stroke-width:2;fill:none;stroke-dasharray:4 6;stroke-dashoffset:200;animation:dash 1.4s var(--ease) forwards}
+.intro .jet{fill:var(--accent);offset-path:path("M5 50 C 40 50, 60 10, 115 12");offset-rotate:auto;animation:fly 1.4s var(--ease) forwards}
+.intro strong{font-family:'Readex Pro',sans-serif;color:#fff;font-size:34px;opacity:0;transform:translateY(12px);animation:rise .7s .6s var(--ease) forwards}
+@keyframes dash{to{stroke-dashoffset:0}}
+@keyframes fly{from{offset-distance:0%}to{offset-distance:100%}}
+@keyframes rise{to{opacity:1;transform:none}}
+
+/* ================= شريط التقدم والهيدر ================= */
+.progress{position:fixed;top:0;right:0;left:0;height:3px;z-index:120;background:linear-gradient(to left,var(--teal),var(--accent));transform-origin:right;transform:scaleX(0)}
+.header{position:fixed;top:0;right:0;left:0;z-index:100;transition:background .4s,box-shadow .4s,padding .4s;padding:18px 0}
+.header.scrolled{background:rgba(11,31,36,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 8px 30px rgba(0,0,0,.18);padding:10px 0}
+.header .container{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:#fff}
+.logo-mark{width:42px;height:42px;border-radius:12px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center}
+.logo strong{font-family:'Readex Pro',sans-serif;font-size:24px}
+.nav{display:flex;gap:6px}
+.nav a{color:rgba(255,255,255,.85);text-decoration:none;padding:8px 14px;border-radius:999px;font-weight:500;font-size:15px;transition:background .25s,color .25s}
+.nav a:hover,.nav a.active{background:rgba(255,255,255,.12);color:#fff}
+.header-actions{display:flex;gap:10px;align-items:center}
+.header.menu-open{backdrop-filter:none;-webkit-backdrop-filter:none;background:transparent;box-shadow:none}
+.menu-btn{display:none;width:44px;height:44px;border-radius:12px;border:1px solid rgba(255,255,255,.25);background:transparent;color:#fff;align-items:center;justify-content:center;cursor:pointer}
+
+/* ================= الأزرار ================= */
+.btn{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:52px;padding:0 28px;border-radius:999px;font-weight:600;font-size:16px;text-decoration:none;border:none;cursor:pointer;overflow:hidden;isolation:isolate;transition:transform .35s var(--ease),box-shadow .35s}
+.btn::before{content:"";position:absolute;inset:0;z-index:-1;background:rgba(255,255,255,.18);transform:translateX(101%);transition:transform .5s var(--ease)}
+.btn:hover::before{transform:none}
+.btn .icon{transition:transform .35s var(--ease)}
+.btn:hover .icon{transform:translateX(-4px)}
+.btn-accent{background:var(--accent-deep);color:#fff;box-shadow:0 10px 24px rgba(180,84,30,.35)}
+.btn-glass{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.3);backdrop-filter:blur(8px)}
+.btn-dark{background:var(--night);color:#fff}
+.btn-sm{min-height:44px;padding:0 20px;font-size:15px}
+
+/* ================= الهيرو ================= */
+.hero{position:relative;min-height:100vh;min-height:100svh;background:var(--night);color:#fff;overflow:hidden;display:flex;align-items:center}
+.sky{position:absolute;inset:0;background:radial-gradient(120% 80% at 70% 15%,#F5B57E 0%,#C7663A 28%,#5A2E3A 55%,var(--night) 85%)}
+.stars{position:absolute;inset:0;opacity:.6}
+.stars i{position:absolute;width:2px;height:2px;border-radius:50%;background:#fff;animation:twinkle 3s ease-in-out infinite}
+@keyframes twinkle{50%{opacity:.2}}
+.sun{position:absolute;width:min(34vw,340px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,#FFE6C2 0%,#FBC98E 55%,rgba(251,201,142,0) 72%);top:12%;left:14%;animation:sunPulse 6s ease-in-out infinite}
+@keyframes sunPulse{50%{transform:scale(1.06)}}
+.layer{position:absolute;right:0;left:0;bottom:0;will-change:transform}
+.layer svg{width:100%;height:auto;display:block}
+.cloud{position:absolute;opacity:.5;animation:drift linear infinite}
+@keyframes drift{from{transform:translateX(-30vw)}to{transform:translateX(130vw)}}
+.flight{position:absolute;inset:0;pointer-events:none}
+.flight path{fill:none;stroke:rgba(255,255,255,.55);stroke-width:2;stroke-dasharray:6 10}
+.flight .plane{offset-path:path("M -60 520 C 300 380, 600 520, 900 300 S 1400 120, 1600 180");offset-rotate:auto 180deg;animation:flyHero 14s linear infinite}
+@keyframes flyHero{from{offset-distance:0%}to{offset-distance:100%}}
+
+.hero-content{position:relative;z-index:3;padding-top:120px;padding-bottom:180px;width:100%}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;padding:8px 16px;border-radius:999px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);backdrop-filter:blur(6px);font-size:14px;font-weight:500}
+.eyebrow .dot{width:8px;height:8px;border-radius:50%;background:var(--teal);box-shadow:0 0 0 0 rgba(63,183,172,.7);animation:ping 2s infinite}
+@keyframes ping{70%{box-shadow:0 0 0 10px rgba(63,183,172,0)}100%{box-shadow:0 0 0 0 rgba(63,183,172,0)}}
+.hero h1{font-size:clamp(44px,7vw,96px);font-weight:700;margin:22px 0 18px;max-width:900px}
+.hero h1 .w{display:inline-block;overflow:hidden;vertical-align:bottom;padding-bottom:.08em}
+.hero h1 .w>span{display:inline-block;transform:translateY(110%);transition:transform 1s var(--ease)}
+.hero.play h1 .w>span{transform:none}
+.hero h1 .hl{color:#FFD3A8;position:relative}
+.hero h1 .hl svg{position:absolute;right:0;left:0;bottom:-.1em;width:100%;height:.3em;overflow:visible}
+.hero h1 .hl path{fill:none;stroke:var(--accent);stroke-width:6;stroke-linecap:round;stroke-dasharray:400;stroke-dashoffset:400;transition:stroke-dashoffset 1.2s 1.1s var(--ease)}
+.hero.play h1 .hl path{stroke-dashoffset:0}
+.hero p.lead{font-size:clamp(17px,1.6vw,21px);max-width:560px;color:rgba(255,255,255,.85);margin:0 0 30px}
+.fade-up{opacity:0;transform:translateY(24px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
+.hero.play .fade-up{opacity:1;transform:none}
+.hero-actions{display:flex;flex-wrap:wrap;gap:12px}
+.scroll-hint{position:absolute;bottom:150px;left:50%;transform:translateX(-50%);z-index:3;width:28px;height:44px;border:2px solid rgba(255,255,255,.5);border-radius:20px;display:none}
+.scroll-hint::after{content:"";position:absolute;top:8px;left:50%;width:4px;height:8px;margin-left:-2px;border-radius:2px;background:#fff;animation:scrollDot 1.6s infinite}
+@keyframes scrollDot{0%{opacity:0;transform:translateY(0)}40%{opacity:1}100%{opacity:0;transform:translateY(14px)}}
+
+/* ================= البحث ================= */
+.search{position:relative;z-index:5;margin-top:-110px}
+.search-card{background:rgba(255,255,255,.92);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,.6);border-radius:28px;box-shadow:0 30px 60px rgba(11,31,36,.18);padding:22px 24px 24px}
+.tabs{position:relative;display:inline-flex;background:var(--sand);border-radius:999px;padding:5px;margin-bottom:18px}
+.tab{position:relative;z-index:1;border:none;background:transparent;min-height:42px;padding:0 20px;border-radius:999px;font-weight:600;cursor:pointer;color:var(--muted);transition:color .3s}
+.tab[aria-selected="true"]{color:#fff}
+.tab-pill{position:absolute;top:5px;bottom:5px;border-radius:999px;background:var(--primary);transition:all .45s var(--ease)}
+.fields{display:grid;grid-template-columns:repeat(4,1fr) auto;gap:12px;align-items:end}
+.field{display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--muted);font-weight:500}
+.field input,.field select{min-height:52px;border:1px solid var(--line);border-radius:14px;padding:0 14px;font-size:15px;color:var(--ink);background:#fff;width:100%;transition:border-color .25s,box-shadow .25s}
+.field input:focus,.field select:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 4px rgba(15,92,99,.12)}
+
+/* ================= الشريط المتحرك ================= */
+.marquee{margin-top:64px;overflow:hidden;border-block:1px solid var(--line);padding:18px 0;background:#fff;-webkit-mask-image:linear-gradient(to left,transparent,#000 10%,#000 90%,transparent);mask-image:linear-gradient(to left,transparent,#000 10%,#000 90%,transparent)}
+.marquee-track{display:flex;width:max-content;gap:48px;animation:marquee 35s linear infinite}
+.marquee:hover .marquee-track{animation-play-state:paused}
+.marquee span{font-family:'Readex Pro',sans-serif;font-size:28px;font-weight:600;color:var(--ink);display:flex;align-items:center;gap:48px;white-space:nowrap}
+.marquee span::after{content:"✦";color:var(--accent);font-size:18px}
+@keyframes marquee{to{transform:translateX(50%)}}
+
+/* ================= الحركة عند التمرير ================= */
+[data-reveal]{opacity:0;transition:opacity .9s var(--ease),transform .9s var(--ease),clip-path 1.1s var(--ease);transition-delay:calc(var(--i,0) * 90ms)}
+[data-reveal="up"]{transform:translateY(40px)}
+[data-reveal="scale"]{transform:scale(.92)}
+[data-reveal="right"]{transform:translateX(-50px)}
+[data-reveal="clip"]{clip-path:inset(0 0 100% 0);opacity:1}
+[data-reveal].in{opacity:1;transform:none;clip-path:inset(0 0 0 0)}
+
+/* ================= الأقسام ================= */
+.section{padding:110px 0 0}
+.section-head{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:16px;margin-bottom:40px}
+.kicker{display:inline-block;color:var(--accent-deep);font-weight:700;font-size:14px;margin-bottom:10px}
+.section-head h2,.center h2{font-size:clamp(32px,4vw,52px)}
+.section-head p,.center p{color:var(--muted);margin:10px 0 0;max-width:520px}
+.center{text-align:center}
+.center p{margin-inline:auto}
+.link-arrow{display:inline-flex;align-items:center;gap:8px;font-weight:600;color:var(--primary);text-decoration:none}
+.link-arrow .icon{transition:transform .35s var(--ease)}
+.link-arrow:hover .icon{transform:translateX(-5px)}
+
+/* ================= بطاقات الوجهات ================= */
+.dest-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:20px}
+.dest{grid-column:span 4;position:relative;border-radius:26px;overflow:hidden;min-height:340px;color:#fff;text-decoration:none;transform-style:preserve-3d;transition:transform .5s var(--ease),box-shadow .5s;box-shadow:0 12px 30px rgba(11,31,36,.12)}
+.dest:nth-child(1),.dest:nth-child(5){grid-column:span 5}
+.dest:nth-child(2),.dest:nth-child(4){grid-column:span 3}
+.dest:hover{box-shadow:0 30px 60px rgba(11,31,36,.25)}
+.dest-media{position:absolute;inset:-6%;transition:transform 1.2s var(--ease)}
+.dest:hover .dest-media{transform:scale(1.08)}
+.dest-media svg,.dest-media img{width:100%;height:100%;object-fit:cover}
+.dest::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(11,31,36,.85),rgba(11,31,36,0) 60%)}
+.dest-glare{position:absolute;inset:0;z-index:2;pointer-events:none;background:radial-gradient(circle at var(--gx,50%) var(--gy,50%),rgba(255,255,255,.25),transparent 45%);opacity:0;transition:opacity .4s}
+.dest:hover .dest-glare{opacity:1}
+.dest-body{position:absolute;right:0;left:0;bottom:0;z-index:3;padding:22px;display:flex;align-items:end;justify-content:space-between;gap:12px;transform:translateZ(40px)}
+.dest-body h3{font-size:26px}
+.dest-body small{display:block;color:rgba(255,255,255,.8);font-size:14px}
+.dest-price{background:rgba(255,255,255,.16);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.25);border-radius:14px;padding:8px 12px;font-size:13px;text-align:center;white-space:nowrap}
+.dest-price strong{display:block;font-size:16px}
+.dest-tag{position:absolute;top:18px;right:18px;z-index:3;background:#fff;color:var(--ink);border-radius:999px;padding:5px 14px;font-size:13px;font-weight:700;transform:translateZ(30px)}
+
+/* ================= الباقات (تمرير أفقي) ================= */
+.deals{background:var(--night);color:#fff;margin-top:110px;padding:100px 0;border-radius:48px 48px 0 0;position:relative;overflow:hidden}
+.deals::before{content:"";position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(63,183,172,.25),transparent 70%);top:-200px;left:-150px;animation:float 12s ease-in-out infinite}
+@keyframes float{50%{transform:translate(80px,60px)}}
+.deals .section-head p{color:rgba(255,255,255,.7)}
+.deals .kicker{color:#FFB98A}
+.countdown{display:flex;gap:10px}
+.countdown div{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:10px 12px;min-width:66px;text-align:center}
+.countdown strong{display:block;font-family:'Readex Pro',sans-serif;font-size:26px;line-height:1.2}
+.countdown strong.flip{animation:flip .5s var(--ease)}
+@keyframes flip{from{transform:translateY(-40%);opacity:0}}
+.countdown span{font-size:12px;color:rgba(255,255,255,.65)}
+.rail{display:flex;gap:22px;overflow-x:auto;scroll-snap-type:x mandatory;padding:10px 24px 30px;scrollbar-width:none;cursor:grab}
+.rail::-webkit-scrollbar{display:none}
+.rail.dragging{cursor:grabbing;scroll-snap-type:none}
+.pkg{flex:0 0 min(380px,82vw);scroll-snap-align:start;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:28px;overflow:hidden;transition:transform .5s var(--ease),background .4s}
+.pkg:hover{transform:translateY(-8px);background:rgba(255,255,255,.1)}
+.pkg-media{position:relative;aspect-ratio:16/10;overflow:hidden}
+.pkg-media svg,.pkg-media img{width:100%;height:100%;object-fit:cover;transition:transform 1.2s var(--ease)}
+.pkg:hover .pkg-media svg,.pkg:hover .pkg-media img{transform:scale(1.07)}
+.badge{position:absolute;top:14px;right:14px;border-radius:999px;padding:5px 14px;font-size:12px;font-weight:700}
+.badge-primary{background:var(--teal);color:var(--night)}
+.badge-accent{background:var(--accent);color:var(--night)}
+.badge-light{background:#fff;color:var(--ink)}
+.pkg-body{padding:22px;display:flex;flex-direction:column;gap:8px}
+.pkg-body h3{font-size:22px}
+.pkg-meta{display:flex;flex-wrap:wrap;gap:8px}
+.pkg-meta span{font-size:13px;background:rgba(255,255,255,.08);border-radius:999px;padding:4px 12px;color:rgba(255,255,255,.85)}
+.pkg-foot{display:flex;align-items:center;justify-content:space-between;margin-top:12px;padding-top:16px;border-top:1px solid rgba(255,255,255,.12)}
+.pkg-foot strong{font-family:'Readex Pro',sans-serif;font-size:22px}
+.pkg-foot s{font-size:13px;color:rgba(255,255,255,.55);margin-right:8px}
+.rail-ctrl{display:flex;align-items:center;gap:16px;margin-top:6px}
+.rail-btn{width:48px;height:48px;border-radius:50%;border:1px solid rgba(255,255,255,.25);background:transparent;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .3s}
+.rail-btn:hover{background:rgba(255,255,255,.12)}
+.rail-bar{flex:1;height:3px;background:rgba(255,255,255,.12);border-radius:2px;overflow:hidden}
+.rail-bar i{display:block;height:100%;width:30%;background:var(--teal);border-radius:2px;transition:width .2s}
+
+/* ================= الخطوات مع خط يُرسم ================= */
+.how{background:var(--night);color:#fff;padding:20px 0 110px}
+.timeline{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:50px}
+.timeline-line{position:absolute;top:36px;right:16%;left:16%;height:2px;background:rgba(255,255,255,.12)}
+.timeline-line i{position:absolute;inset:0;background:linear-gradient(to left,var(--teal),var(--accent));transform-origin:right;transform:scaleX(0);transition:transform .1s linear}
+.step{position:relative;text-align:center;padding:0 10px}
+.step-num{width:72px;height:72px;margin:0 auto 20px;border-radius:50%;background:var(--night-2);border:2px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-family:'Readex Pro',sans-serif;font-size:26px;font-weight:700;position:relative;z-index:1;transition:background .5s,border-color .5s,transform .5s var(--ease-back)}
+.step.lit .step-num{background:var(--accent-deep);border-color:var(--accent);transform:scale(1.08)}
+.step h3{font-size:22px;margin-bottom:8px}
+.step p{margin:0;color:rgba(255,255,255,.72)}
+
+/* ================= المميزات ================= */
+.features{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.feature{background:#fff;border:1px solid var(--line);border-radius:24px;padding:28px 24px;transition:transform .5s var(--ease),box-shadow .5s,border-color .5s}
+.feature:hover{transform:translateY(-6px);box-shadow:0 20px 40px rgba(11,31,36,.08);border-color:transparent}
+.feature-icon{width:56px;height:56px;border-radius:18px;background:#E3F0EF;color:var(--primary);display:flex;align-items:center;justify-content:center;margin-bottom:18px;transition:transform .6s var(--ease-back),background .4s,color .4s}
+.feature:hover .feature-icon{transform:rotate(-8deg) scale(1.1);background:var(--primary);color:#fff}
+.feature h3{font-family:'IBM Plex Sans Arabic',sans-serif;font-size:19px;margin-bottom:6px}
+.feature p{margin:0;color:var(--muted);font-size:15px}
+
+/* ================= الأسئلة ================= */
+.faq{max-width:840px;margin:40px auto 0;display:flex;flex-direction:column;gap:12px}
+.faq-item{background:#fff;border:1px solid var(--line);border-radius:20px;overflow:hidden}
+.faq-q{width:100%;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:20px 24px;background:none;border:none;font-weight:600;font-size:17px;text-align:right;cursor:pointer;color:var(--ink)}
+.faq-q .plus{width:32px;height:32px;border-radius:50%;background:var(--sand);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform .45s var(--ease),background .3s}
+.faq-item.open .plus{transform:rotate(45deg);background:var(--accent-deep);color:#fff}
+.faq-a{display:grid;grid-template-rows:0fr;transition:grid-template-rows .5s var(--ease)}
+.faq-item.open .faq-a{grid-template-rows:1fr}
+.faq-a>div{overflow:hidden}
+.faq-a p{margin:0;padding:0 24px 22px;color:var(--muted)}
+
+/* ================= الدعوة للتواصل ================= */
+.cta{margin-top:110px}
+.cta-box{position:relative;overflow:hidden;border-radius:36px;background:var(--primary);color:#fff;padding:64px 48px;display:grid;grid-template-columns:1.2fr 1fr;gap:40px;align-items:center}
+.cta-box::before,.cta-box::after{content:"";position:absolute;border-radius:50%;border:1px solid rgba(255,255,255,.15)}
+.cta-box::before{width:420px;height:420px;left:-120px;top:-160px;animation:spin 30s linear infinite}
+.cta-box::after{width:260px;height:260px;left:-40px;top:-80px;border-style:dashed;animation:spin 20s linear infinite reverse}
+@keyframes spin{to{transform:rotate(360deg)}}
+.cta-box h2{font-size:clamp(30px,3.6vw,46px)}
+.cta-box p{color:rgba(255,255,255,.82);margin:12px 0 26px}
+.news{position:relative;z-index:1;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:24px;padding:26px;backdrop-filter:blur(10px)}
+.news h3{font-size:22px;margin-bottom:6px}
+.news p{margin:0 0 16px;font-size:15px}
+.news-row{display:flex;gap:10px}
+.news input{flex:1;min-width:0;min-height:52px;border:none;border-radius:999px;padding:0 18px;direction:ltr;text-align:right;font-size:15px}
+.form-msg{min-height:22px;margin-top:10px;font-size:14px;color:#FFD3A8}
+
+/* ================= الفوتر ================= */
+.footer{background:var(--night);color:#AFC0C4;margin-top:110px;padding:70px 0 26px}
+.footer-big{font-family:'Readex Pro',sans-serif;font-size:clamp(60px,14vw,200px);font-weight:700;line-height:1;color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.18);text-align:center;margin-bottom:50px;user-select:none}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1.4fr;gap:30px}
+.footer strong{display:block;color:#fff;margin-bottom:12px}
+.footer a{display:block;color:#AFC0C4;text-decoration:none;margin-bottom:8px;font-size:15px;transition:color .25s,transform .25s}
+.footer a:hover{color:#fff;transform:translateX(-4px)}
+.footer p,.footer span{font-size:15px}
+.footer-bottom{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;border-top:1px solid rgba(255,255,255,.1);margin-top:40px;padding-top:20px;font-size:13px}
+.footer-bottom a{display:inline;font-size:13px}
+
+/* ================= الأزرار العائمة ================= */
+.wa-float{position:fixed;bottom:22px;left:22px;z-index:90;width:60px;height:60px;border-radius:50%;background:#1E7A4C;color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 12px 28px rgba(0,0,0,.25);transform:scale(0);transition:transform .6s var(--ease-back)}
+.wa-float.show{transform:scale(1)}
+.wa-float::before{content:"";position:absolute;inset:0;border-radius:50%;border:2px solid #1E7A4C;animation:ring 2.4s infinite}
+@keyframes ring{to{transform:scale(1.6);opacity:0}}
+.wa-float .icon{width:28px;height:28px}
+.to-top{position:fixed;bottom:22px;right:22px;z-index:90;width:50px;height:50px;border-radius:50%;border:none;background:#fff;color:var(--ink);box-shadow:0 10px 24px rgba(0,0,0,.15);display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;transform:translateY(20px);pointer-events:none;transition:all .45s var(--ease)}
+.to-top.show{opacity:1;transform:none;pointer-events:auto}
+.to-top svg.ring{position:absolute;inset:0;width:50px;height:50px;transform:rotate(-90deg)}
+.to-top svg.ring circle{fill:none;stroke:var(--accent);stroke-width:3;stroke-dasharray:145;stroke-dashoffset:145}
+
+/* ================= الجوال ================= */
+@media (min-width:900px){.scroll-hint{display:block}}
+@media (max-width:1100px){
+  .fields{grid-template-columns:repeat(2,1fr)}
+  .fields .btn{grid-column:1/-1}
+  .features{grid-template-columns:repeat(2,1fr)}
+  .dest,.dest:nth-child(n){grid-column:span 6}
+  .dest:nth-child(1){grid-column:span 12}
+}
+@media (max-width:860px){
+  .menu-btn{display:flex}
+  .nav{position:fixed;inset:0;z-index:-1;background:var(--night);flex-direction:column;align-items:center;justify-content:center;gap:10px;clip-path:circle(0 at 40px 40px);transition:clip-path .7s var(--ease)}
+  .nav.open{clip-path:circle(150% at 40px 40px)}
+  .nav a{font-size:26px;font-family:'Readex Pro',sans-serif}
+  .header-actions .btn{display:none}
+  .timeline{grid-template-columns:1fr;gap:40px}
+  .timeline-line{top:0;bottom:0;right:50%;left:auto;width:2px;height:auto}
+  .timeline-line i{transform-origin:top;transform:scaleY(0)}
+  .cta-box{grid-template-columns:1fr;padding:44px 26px}
+  .footer-grid{grid-template-columns:1fr 1fr}
+}
+@media (max-width:560px){
+  .dest,.dest:nth-child(n){grid-column:span 12;min-height:280px}
+  .fields,.features{grid-template-columns:1fr}
+  .tabs{display:flex}
+  .tab{flex:1;padding:0 8px;font-size:14px;white-space:nowrap}
+  .footer-grid{grid-template-columns:1fr}
+  .news-row{flex-direction:column}
+  .countdown div{min-width:56px}
+}
+
+/* احترام إعداد تقليل الحركة */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+  [data-reveal]{opacity:1;transform:none;clip-path:none}
+}
+</style>
+</head>
+<body class="loading">
+
+<!-- أيقونات -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-plane" viewBox="0 0 24 24"><path d="M2 16l20-7-7 13-3-6z"/><path d="M12 16 22 9"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></symbol>
+  <symbol id="i-arrow-r" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+  <symbol id="i-up" viewBox="0 0 24 24"><path d="M12 19V5M6 11l6-6 6 6"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+  <symbol id="i-tag" viewBox="0 0 24 24"><path d="M20 12 12 20l-8-8V4h8z"/><circle cx="8.5" cy="8.5" r="1.5"/></symbol>
+  <symbol id="i-headset" viewBox="0 0 24 24"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><path d="M4 14h3v5H4zM17 14h3v5h-3z"/></symbol>
+  <symbol id="i-family" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20c0-3.5 2.7-6 6-6s6 2.5 6 6M15 20c0-2.5 1-4.5 3-5"/></symbol>
+  <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></symbol>
+  <symbol id="i-chat" viewBox="0 0 24 24"><path d="M21 12a9 9 0 0 1-13.5 7.8L3 21l1.2-4.5A9 9 0 1 1 21 12z"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h10M4 17h16"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+</svg>
+
+<!-- شاشة البداية -->
+<div class="intro" id="intro" aria-hidden="true">
+  <svg viewBox="0 0 120 60"><path class="trail" d="M5 50 C 40 50, 60 10, 115 12"/><path class="jet" d="M0 -5 L12 0 L0 5 L3 0Z"/></svg>
+  <strong>رحلاتي</strong>
+</div>
+
+<div class="progress" id="progress"></div>
+
+<!-- الهيدر -->
+<header class="header" id="header">
+  <div class="container">
+    <a href="#top" class="logo"><span class="logo-mark"><svg class="icon"><use href="#i-plane"/></svg></span><strong>رحلاتي</strong></a>
+    <nav class="nav" id="nav" aria-label="القائمة الرئيسية">
+      <a href="#top" class="active">الرئيسية</a>
+      <a href="#destinations">الوجهات</a>
+      <a href="#deals">العروض</a>
+      <a href="#how">كيف أحجز؟</a>
+      <a href="#faq">الأسئلة</a>
+      <a href="#contact">تواصل</a>
+    </nav>
+    <div class="header-actions">
+      <a href="#search" class="btn btn-accent btn-sm">احجز الآن</a>
+      <button class="menu-btn" id="menuBtn" aria-label="فتح القائمة" aria-expanded="false"><svg class="icon"><use href="#i-menu"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<!-- الهيرو -->
+<section class="hero" id="top">
+  <div class="sky"></div>
+  <div class="stars" id="stars"></div>
+  <div class="sun" data-parallax="0.25"></div>
+  <svg class="cloud" style="top:18%;width:180px;animation-duration:70s" viewBox="0 0 180 50" aria-hidden="true"><ellipse cx="60" cy="30" rx="60" ry="16" fill="#fff"/><ellipse cx="110" cy="22" rx="45" ry="18" fill="#fff"/></svg>
+  <svg class="cloud" style="top:32%;width:120px;animation-duration:95s;animation-delay:-40s" viewBox="0 0 180 50" aria-hidden="true"><ellipse cx="60" cy="30" rx="60" ry="16" fill="#fff"/><ellipse cx="110" cy="22" rx="45" ry="18" fill="#fff"/></svg>
+  <svg class="flight" viewBox="0 0 1500 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <path d="M -60 520 C 300 380, 600 520, 900 300 S 1400 120, 1600 180"/>
+    <g class="plane"><path d="M-14 -6 L16 0 L-14 6 L-8 0Z" fill="#fff"/></g>
+  </svg>
+  <div class="layer" data-parallax="0.15" aria-hidden="true"><svg viewBox="0 0 1440 320" preserveAspectRatio="none" style="height:42vh"><path d="M0 200 Q 180 90 380 170 T 760 140 T 1120 120 T 1440 150 V320 H0Z" fill="#7A3B2E"/></svg></div>
+  <div class="layer" data-parallax="0.3" aria-hidden="true"><svg viewBox="0 0 1440 320" preserveAspectRatio="none" style="height:32vh"><path d="M0 230 Q 240 150 520 220 T 1000 200 T 1440 210 V320 H0Z" fill="#4A2530"/></svg></div>
+  <div class="layer" data-parallax="0.5" aria-hidden="true"><svg viewBox="0 0 1440 320" preserveAspectRatio="none" style="height:24vh"><path d="M0 260 Q 300 200 640 255 T 1440 240 V320 H0Z" fill="#0B1F24"/></svg></div>
+
+  <div class="container hero-content">
+    <span class="eyebrow fade-up"><span class="dot"></span>باقات الشتاء متاحة الآن</span>
+    <h1 id="heroTitle">اكتشف العالم واصنع <span class="hl">ذكرياتك<svg viewBox="0 0 200 20" preserveAspectRatio="none" aria-hidden="true"><path d="M5 14 Q 100 2 195 12"/></svg></span></h1>
+    <p class="lead fade-up" style="transition-delay:.9s">رحلات داخل المملكة وخارجها بأسعار واضحة، وبرنامج يومي جاهز، وفريق يتابع معك من الحجز حتى العودة.</p>
+    <div class="hero-actions fade-up" style="transition-delay:1.05s">
+      <a href="#destinations" class="btn btn-accent magnetic">استكشف الوجهات<svg class="icon"><use href="#i-arrow"/></svg></a>
+      <a href="#deals" class="btn btn-glass magnetic">عروض الأسبوع</a>
+    </div>
+  </div>
+  <div class="scroll-hint" aria-hidden="true"></div>
+</section>
+
+<!-- البحث -->
+<section class="search container" id="search">
+  <form class="search-card" id="searchForm" data-reveal="up">
+    <div class="tabs" role="tablist" aria-label="نوع البحث" id="tabs">
+      <span class="tab-pill" id="tabPill"></span>
+      <button type="button" class="tab" role="tab" aria-selected="true" data-tab="packages">باقات سياحية</button>
+      <button type="button" class="tab" role="tab" aria-selected="false" data-tab="hotels">فنادق</button>
+      <button type="button" class="tab" role="tab" aria-selected="false" data-tab="flights">طيران</button>
+    </div>
+    <div class="fields">
+      <label class="field"><span id="fromLabel">من</span><input type="text" name="from" value="الرياض"></label>
+      <label class="field">الوجهة<input type="text" name="to" placeholder="إلى أين تريد السفر؟" required></label>
+      <label class="field">تاريخ السفر<input type="date" name="date"></label>
+      <label class="field">المسافرون
+        <select name="travelers"><option>بالغان</option><option>بالغان وطفل</option><option>عائلة (٤ أشخاص)</option><option>شخص واحد</option></select>
+      </label>
+      <button type="submit" class="btn btn-dark"><svg class="icon"><use href="#i-search"/></svg>ابحث</button>
+    </div>
+  </form>
+</section>
+
+<!-- شريط الوجهات المتحرك -->
+<div class="marquee" aria-hidden="true"><div class="marquee-track" id="marquee"></div></div>
+
+<!-- الوجهات -->
+<section class="section container" id="destinations">
+  <div class="section-head">
+    <div>
+      <span class="kicker" data-reveal="up">الوجهات الشائعة</span>
+      <h2 data-reveal="clip">وين ودّك تروح؟</h2>
+      <p data-reveal="up" style="--i:1">من جبال الجنوب إلى القوقاز، اختر وجهتك ونجهز لك الباقي.</p>
+    </div>
+    <a href="#contact" class="link-arrow" data-reveal="up">كل الوجهات<svg class="icon"><use href="#i-arrow"/></svg></a>
+  </div>
+  <div class="dest-grid" id="destGrid"></div>
+</section>
+
+<!-- العروض -->
+<section class="deals" id="deals">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <span class="kicker" data-reveal="up">لفترة محدودة</span>
+        <h2 data-reveal="clip">عروض هذا الأسبوع</h2>
+        <p data-reveal="up" style="--i:1">باقات كاملة تشمل الطيران والفندق والتنقلات والجولات.</p>
+      </div>
+      <div class="countdown" data-reveal="up" aria-label="الوقت المتبقي على العرض">
+        <div><strong id="cdD">00</strong><span>يوم</span></div>
+        <div><strong id="cdH">00</strong><span>ساعة</span></div>
+        <div><strong id="cdM">00</strong><span>دقيقة</span></div>
+        <div><strong id="cdS">00</strong><span>ثانية</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="rail" id="rail" tabindex="0" aria-label="الباقات — مرر أفقيًا"></div>
+  <div class="container rail-ctrl">
+    <button class="rail-btn" id="railPrev" aria-label="السابق"><svg class="icon"><use href="#i-arrow-r"/></svg></button>
+    <div class="rail-bar"><i id="railBar"></i></div>
+    <button class="rail-btn" id="railNext" aria-label="التالي"><svg class="icon"><use href="#i-arrow"/></svg></button>
+  </div>
+</section>
+
+<!-- كيف أحجز -->
+<section class="how" id="how">
+  <div class="container">
+    <div class="center">
+      <span class="kicker" style="color:#FFB98A" data-reveal="up">بسيطة</span>
+      <h2 data-reveal="clip">ثلاث خطوات وتكون رحلتك جاهزة</h2>
+    </div>
+    <div class="timeline" id="timeline">
+      <div class="timeline-line"><i id="timelineFill"></i></div>
+      <div class="step"><span class="step-num">١</span><h3>اختر باقتك</h3><p>تصفح الوجهات واختر الباقة المناسبة لميزانيتك وعدد المسافرين.</p></div>
+      <div class="step"><span class="step-num">٢</span><h3>أرسل طلبك</h3><p>راسلنا على واتساب، ونؤكد لك التوفر والسعر النهائي.</p></div>
+      <div class="step"><span class="step-num">٣</span><h3>سافر واستمتع</h3><p>يصلك البرنامج والحجوزات، وفريقنا معك طوال الرحلة.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- المميزات -->
+<section class="section container">
+  <div class="center" style="margin-bottom:40px">
+    <span class="kicker" data-reveal="up">ليش رحلاتي؟</span>
+    <h2 data-reveal="clip">نخطط عنك، وأنت استمتع</h2>
+  </div>
+  <div class="features">
+    <div class="feature" data-reveal="up" style="--i:0"><span class="feature-icon"><svg class="icon"><use href="#i-tag"/></svg></span><h3>أسعار واضحة</h3><p>السعر المكتوب يشمل كل شيء، بدون رسوم مخفية.</p></div>
+    <div class="feature" data-reveal="up" style="--i:1"><span class="feature-icon"><svg class="icon"><use href="#i-headset"/></svg></span><h3>متابعة طوال الرحلة</h3><p>فريق يرد عليك بالعربي من الحجز حتى العودة.</p></div>
+    <div class="feature" data-reveal="up" style="--i:2"><span class="feature-icon"><svg class="icon"><use href="#i-family"/></svg></span><h3>باقات للعوائل</h3><p>فنادق وبرامج مختارة تناسب الأطفال.</p></div>
+    <div class="feature" data-reveal="up" style="--i:3"><span class="feature-icon"><svg class="icon"><use href="#i-calendar"/></svg></span><h3>برنامج يومي جاهز</h3><p>تعرف تفاصيل رحلتك يوم بيوم قبل ما تسافر.</p></div>
+  </div>
+</section>
+
+<!-- الأسئلة -->
+<section class="section container" id="faq">
+  <div class="center">
+    <span class="kicker" data-reveal="up">عندك سؤال؟</span>
+    <h2 data-reveal="clip">الأسئلة الشائعة</h2>
+  </div>
+  <div class="faq" id="faqList">
+    <div class="faq-item" data-reveal="up"><button class="faq-q" aria-expanded="false">هل السعر يشمل الطيران؟<span class="plus"><svg class="icon"><use href="#i-plus"/></svg></span></button><div class="faq-a"><div><p>يختلف حسب الباقة، ومكتوب في كل باقة ما يشمله السعر بالتفصيل.</p></div></div></div>
+    <div class="faq-item" data-reveal="up" style="--i:1"><button class="faq-q" aria-expanded="false">هل تساعدون في التأشيرة؟<span class="plus"><svg class="icon"><use href="#i-plus"/></svg></span></button><div class="faq-a"><div><p>[اكتب هنا سياستك في المساعدة على إصدار التأشيرات]</p></div></div></div>
+    <div class="faq-item" data-reveal="up" style="--i:2"><button class="faq-q" aria-expanded="false">كيف أدفع؟<span class="plus"><svg class="icon"><use href="#i-plus"/></svg></span></button><div class="faq-a"><div><p>[اكتب طرق الدفع المتاحة: تحويل بنكي، مدى، Apple Pay…]</p></div></div></div>
+    <div class="faq-item" data-reveal="up" style="--i:3"><button class="faq-q" aria-expanded="false">هل أقدر ألغي الحجز؟<span class="plus"><svg class="icon"><use href="#i-plus"/></svg></span></button><div class="faq-a"><div><p>[اكتب سياسة الإلغاء والاسترجاع]</p></div></div></div>
+  </div>
+</section>
+
+<!-- التواصل -->
+<section class="cta container" id="contact">
+  <div class="cta-box" data-reveal="scale">
+    <div style="position:relative;z-index:1">
+      <h2>محتار وين تسافر؟</h2>
+      <p>أرسل لنا ميزانيتك وعدد المسافرين، ونقترح عليك أنسب باقة خلال دقائق.</p>
+      <a href="#" class="btn btn-accent magnetic js-wa"><svg class="icon"><use href="#i-chat"/></svg>راسلنا على واتساب</a>
+    </div>
+    <form class="news" id="newsForm">
+      <h3>وصلك العرض قبل غيرك</h3>
+      <p>اشترك في النشرة البريدية لتصلك العروض الجديدة أولًا بأول.</p>
+      <div class="news-row">
+        <input type="email" name="email" placeholder="name@example.com" aria-label="البريد الإلكتروني" required>
+        <button type="submit" class="btn btn-dark">اشترك</button>
+      </div>
+      <div class="form-msg" id="newsMsg" role="status"></div>
+    </form>
+  </div>
+</section>
+
+<!-- الفوتر -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-big" aria-hidden="true">رحلاتي</div>
+    <div class="footer-grid">
+      <div><strong style="font-family:'Readex Pro',sans-serif;font-size:22px">رحلاتي</strong><p style="margin:0;max-width:300px">شريكك في التخطيط لرحلات مريحة داخل المملكة وخارجها.</p></div>
+      <nav aria-label="روابط"><strong>روابط</strong><a href="#destinations">الوجهات</a><a href="#deals">العروض</a><a href="#how">كيف أحجز؟</a></nav>
+      <nav aria-label="المساعدة"><strong>المساعدة</strong><a href="#faq">الأسئلة الشائعة</a><a href="#faq">سياسة الإلغاء</a><a href="#contact">تواصل معنا</a></nav>
+      <div><strong>تواصل معنا</strong><span style="display:block;margin-bottom:8px">واتساب: <span id="waText" dir="ltr">[رقم الجوال]</span></span><span style="display:block;margin-bottom:8px">البريد: [البريد الإلكتروني]</span><span style="display:block">الرياض، المملكة العربية السعودية</span></div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span id="year">2026</span> رحلاتي. جميع الحقوق محفوظة.</span>
+      <span>مدى · Apple Pay · فيزا · ماستركارد · <a href="../">النسخة الأولى</a></span>
+    </div>
+  </div>
+</footer>
+
+<a href="#" class="wa-float js-wa" id="waFloat" aria-label="تواصل عبر واتساب"><svg class="icon"><use href="#i-chat"/></svg></a>
+<button class="to-top" id="toTop" aria-label="العودة للأعلى"><svg class="ring" viewBox="0 0 50 50" aria-hidden="true"><circle cx="25" cy="25" r="23" id="topRing"/></svg><svg class="icon"><use href="#i-up"/></svg></button>
+
+<script>
+/* =========================================================
+   الإعدادات — عدّل هنا فقط
+   ========================================================= */
+const WHATSAPP_NUMBER = "966555555500"; // رقم تجريبي — غيّره لرقمك الحقيقي
+const OFFER_END = "2026-11-20T23:59:00"; // نهاية عرض الأسبوع
+
+// image: مسار صورة مثل "images/alula.jpg" (اتركه فاضي للرسمة)
+const DESTINATIONS = [
+  { name:"العلا",         sub:"السعودية",       tag:"داخلية",      price:"[السعر]", image:"", colors:["#F6C79A","#FFF1DC","#D9894D","#8E3F17"] },
+  { name:"أبها",          sub:"السعودية",       tag:"أجواء باردة", price:"[السعر]", image:"", colors:["#BFDCE0","#F4FAFA","#5F9686","#2E5A4B"] },
+  { name:"جدة التاريخية", sub:"السعودية",       tag:"تراث",        price:"[السعر]", image:"", colors:["#EBD8BE","#FFFFFF","#BF9566","#7E5B36"] },
+  { name:"دبي",           sub:"الإمارات",       tag:"تسوق وترفيه", price:"[السعر]", image:"", colors:["#CADDF0","#FFF3DD","#D9BC8C","#A9834F"] },
+  { name:"جورجيا",        sub:"تبليسي وباتومي", tag:"طبيعة",       price:"[السعر]", image:"", colors:["#D1E5EE","#FFFFFF","#6E9E82","#244F3D"] },
+  { name:"أذربيجان",      sub:"باكو وقبالا",    tag:"عوائل",       price:"[السعر]", image:"", colors:["#DCD8EA","#FFF5E2","#8290AD","#3E4C6A"] }
+];
+
+// badgeType: primary | accent | light
+const PACKAGES = [
+  { name:"باقة جورجيا للعوائل",   duration:"٧ أيام / ٦ ليالٍ", includes:["طيران","فندق","جولات يومية"],   price:"[السعر]", oldPrice:"[قبل]", badge:"الأكثر طلبًا", badgeType:"primary", image:"", colors:["#D1E5EE","#FFFFFF","#6E9E82","#244F3D"] },
+  { name:"شتاء العلا",            duration:"٣ أيام / ليلتان",   includes:["فندق","جولات","تنقلات"],        price:"[السعر]", oldPrice:"[قبل]", badge:"عرض محدود",   badgeType:"accent",  image:"", colors:["#F6C79A","#FFF1DC","#D9894D","#8E3F17"] },
+  { name:"أذربيجان باكو وقبالا",  duration:"٦ أيام / ٥ ليالٍ", includes:["طيران","فندق","سائق خاص"],     price:"[السعر]", oldPrice:"[قبل]", badge:"جديد",        badgeType:"light",   image:"", colors:["#DCD8EA","#FFF5E2","#8290AD","#3E4C6A"] },
+  { name:"أبها والسودة",          duration:"٤ أيام / ٣ ليالٍ", includes:["فندق","جولات","تلفريك"],       price:"[السعر]", oldPrice:"[قبل]", badge:"داخلية",      badgeType:"light",   image:"", colors:["#BFDCE0","#F4FAFA","#5F9686","#2E5A4B"] }
+];
+
+/* =========================================================
+   الكود — ما يحتاج تعديل
+   ========================================================= */
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+function scene([sky, sun, far, near], alt){
+  return `<svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" role="img" aria-label="${alt}">
+    <rect width="400" height="300" fill="${sky}"/><circle cx="290" cy="90" r="34" fill="${sun}"/>
+    <path d="M0 200 Q100 130 200 190 T400 170 V300 H0Z" fill="${far}"/>
+    <path d="M0 250 Q120 200 240 240 T400 232 V300 H0Z" fill="${near}"/></svg>`;
+}
+const media = it => it.image ? `<img src="${it.image}" alt="${it.name}" loading="lazy">` : scene(it.colors, it.name);
+const waLink = t => WHATSAPP_NUMBER ? `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(t || "السلام عليكم، أبي أستفسر عن باقات رحلاتي")}` : "#contact";
+
+/* ---- تعبئة المحتوى ---- */
+$("#destGrid").innerHTML = DESTINATIONS.map((d,i) => `
+  <a href="${waLink("أبي أستفسر عن رحلة إلى " + d.name)}" target="_blank" rel="noopener" class="dest" data-reveal="up" style="--i:${i%3}" data-tilt>
+    <div class="dest-media">${media(d)}</div>
+    <span class="dest-tag">${d.tag}</span>
+    <span class="dest-glare"></span>
+    <div class="dest-body"><div><h3>${d.name}</h3><small>${d.sub}</small></div>
+      <span class="dest-price">يبدأ من<strong>${d.price} ر.س</strong></span></div>
+  </a>`).join("");
+
+$("#rail").innerHTML = PACKAGES.map((p,i) => `
+  <article class="pkg" data-reveal="right" style="--i:${i}">
+    <div class="pkg-media">${media(p)}<span class="badge badge-${p.badgeType}">${p.badge}</span></div>
+    <div class="pkg-body">
+      <h3>${p.name}</h3>
+      <div class="pkg-meta"><span>${p.duration}</span>${p.includes.map(x=>`<span>${x}</span>`).join("")}</div>
+      <div class="pkg-foot"><span><strong>${p.price} ر.س</strong><s>${p.oldPrice}</s></span>
+        <a href="${waLink("أبي أحجز: " + p.name)}" target="_blank" rel="noopener" class="btn btn-accent btn-sm">احجز</a></div>
+    </div>
+  </article>`).join("");
+
+const names = DESTINATIONS.map(d=>`<span>${d.name}</span>`).join("");
+$("#marquee").innerHTML = names + names;
+
+$$(".js-wa").forEach(a => { a.href = waLink(); if (WHATSAPP_NUMBER){ a.target="_blank"; a.rel="noopener"; } });
+if (WHATSAPP_NUMBER) $("#waText").textContent = "+" + WHATSAPP_NUMBER;
+$("#year").textContent = new Date().getFullYear();
+
+/* ---- نجوم السماء ---- */
+const stars = $("#stars");
+for (let i=0;i<40;i++){ const s=document.createElement("i"); s.style.cssText=`top:${Math.random()*45}%;left:${Math.random()*100}%;animation-delay:${Math.random()*3}s`; stars.appendChild(s); }
+
+/* ---- العنوان كلمة كلمة ---- */
+(function splitTitle(){
+  const h = $("#heroTitle"), hl = h.querySelector(".hl");
+  const before = h.firstChild.textContent.trim().split(/\s+/);
+  let delay = 0.25, html = "";
+  before.forEach(w => { html += `<span class="w"><span style="transition-delay:${delay}s">${w}</span></span> `; delay += .12; });
+  h.innerHTML = html + `<span class="w"><span style="transition-delay:${delay}s">${hl.outerHTML}</span></span>`;
+})();
+
+/* ---- شاشة البداية ---- */
+function startHero(){ $("#intro").classList.add("done"); document.body.classList.remove("loading"); setTimeout(()=>$(".hero").classList.add("play"), 250); }
+if (reduce) { $("#intro").remove(); document.body.classList.remove("loading"); $(".hero").classList.add("play"); }
+else addEventListener("load", () => setTimeout(startHero, 1500));
+setTimeout(() => { if (document.body.classList.contains("loading")) startHero(); }, 3500); // احتياط
+
+/* ---- الظهور عند التمرير ---- */
+const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target); } }), { threshold:.15, rootMargin:"0px 0px -60px 0px" });
+$$("[data-reveal]").forEach(el => io.observe(el));
+
+/* ---- التمرير: تقدم، هيدر، بارالاكس، خط الخطوات ---- */
+const header=$("#header"), progress=$("#progress"), toTop=$("#toTop"), ring=$("#topRing"), waF=$("#waFloat");
+const layers=$$("[data-parallax]"), tl=$("#timeline"), tlFill=$("#timelineFill"), steps=$$(".step");
+let ticking=false;
+function onScroll(){
+  const y=scrollY, max=document.documentElement.scrollHeight-innerHeight, p=max>0?y/max:0;
+  progress.style.transform=`scaleX(${p})`;
+  header.classList.toggle("scrolled", y>40);
+  toTop.classList.toggle("show", y>600);
+  waF.classList.toggle("show", y>300);
+  ring.style.strokeDashoffset = 145 - 145*p;
+  if (!reduce && y < innerHeight*1.2) layers.forEach(l => l.style.transform=`translate3d(0,${y*l.dataset.parallax}px,0)`);
+  const r=tl.getBoundingClientRect(), vertical=innerWidth<=860;
+  const tp=Math.min(1,Math.max(0,(innerHeight*0.75-r.top)/(r.height)));
+  tlFill.style.transform = vertical ? `scaleY(${tp})` : `scaleX(${tp})`;
+  steps.forEach((s,i) => s.classList.toggle("lit", tp >= (vertical ? i/steps.length : i/(steps.length-1)) - 0.02));
+  ticking=false;
+}
+addEventListener("scroll", () => { if(!ticking){ requestAnimationFrame(onScroll); ticking=true; } }, {passive:true});
+addEventListener("resize", onScroll); onScroll();
+toTop.addEventListener("click", () => scrollTo({top:0,behavior:"smooth"}));
+
+/* ---- إبراز رابط القسم الحالي ---- */
+const navLinks=$$(".nav a");
+const secIO=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ navLinks.forEach(a=>a.classList.toggle("active", a.getAttribute("href")==="#"+e.target.id)); } }),{rootMargin:"-45% 0px -50% 0px"});
+["top","destinations","deals","how","faq","contact"].forEach(id=>{ const s=document.getElementById(id); if(s) secIO.observe(s); });
+
+/* ---- إمالة ثلاثية الأبعاد للبطاقات ---- */
+if (!reduce && matchMedia("(hover:hover)").matches){
+  $$("[data-tilt]").forEach(c => {
+    c.addEventListener("pointermove", e => {
+      const r=c.getBoundingClientRect(), x=(e.clientX-r.left)/r.width, y=(e.clientY-r.top)/r.height;
+      c.style.transform=`perspective(900px) rotateY(${(x-.5)*10}deg) rotateX(${(.5-y)*10}deg)`;
+      c.style.setProperty("--gx", x*100+"%"); c.style.setProperty("--gy", y*100+"%");
+    });
+    c.addEventListener("pointerleave", () => c.style.transform="");
+  });
+  /* أزرار مغناطيسية */
+  $$(".magnetic").forEach(b => {
+    b.addEventListener("pointermove", e => { const r=b.getBoundingClientRect(); b.style.transform=`translate(${(e.clientX-r.left-r.width/2)*.25}px,${(e.clientY-r.top-r.height/2)*.35}px)`; });
+    b.addEventListener("pointerleave", () => b.style.transform="");
+  });
+}
+
+/* ---- تبويبات البحث مع مؤشر متحرك ---- */
+const tabs=$$(".tab"), pill=$("#tabPill"); let currentTab="packages";
+function movePill(t){ pill.style.width=t.offsetWidth+"px"; pill.style.right=(t.parentElement.offsetWidth - t.offsetLeft - t.offsetWidth)+"px"; }
+tabs.forEach(t => t.addEventListener("click", () => {
+  tabs.forEach(x=>x.setAttribute("aria-selected","false")); t.setAttribute("aria-selected","true");
+  currentTab=t.dataset.tab; movePill(t);
+  $("#fromLabel").textContent = currentTab==="hotels" ? "المدينة" : "من";
+}));
+addEventListener("load", () => movePill($(".tab[aria-selected=true]"))); addEventListener("resize", () => movePill($(".tab[aria-selected=true]")));
+movePill(tabs[0]);
+
+$("#searchForm").addEventListener("submit", e => {
+  e.preventDefault(); const f=e.target, types={packages:"باقة سياحية",hotels:"فندق",flights:"طيران"};
+  const text=`طلب ${types[currentTab]}\nمن: ${f.from.value}\nإلى: ${f.to.value}\nالتاريخ: ${f.date.value||"مرن"}\nالمسافرون: ${f.travelers.value}`;
+  if (WHATSAPP_NUMBER) window.open(waLink(text), "_blank");
+});
+
+/* ---- شريط الباقات: سحب، أزرار، تقدم ---- */
+const rail=$("#rail"), bar=$("#railBar");
+function railProgress(){ const max=rail.scrollWidth-rail.clientWidth; const p=max>0?Math.abs(rail.scrollLeft)/max:1; bar.style.width=(25+p*75)+"%"; }
+rail.addEventListener("scroll", railProgress, {passive:true}); railProgress();
+const step = () => (rail.querySelector(".pkg")?.offsetWidth || 300) + 22;
+$("#railNext").addEventListener("click", () => rail.scrollBy({left:-step(),behavior:"smooth"}));
+$("#railPrev").addEventListener("click", () => rail.scrollBy({left:step(),behavior:"smooth"}));
+let down=false, sx=0, sl=0, moved=false;
+rail.addEventListener("pointerdown", e => { if(e.pointerType!=="mouse") return; down=true; moved=false; sx=e.clientX; sl=rail.scrollLeft; });
+addEventListener("pointermove", e => { if(!down) return; const dx=e.clientX-sx; if(Math.abs(dx)>5){ moved=true; rail.classList.add("dragging"); } rail.scrollLeft=sl-dx; });
+addEventListener("pointerup", () => { down=false; rail.classList.remove("dragging"); });
+rail.addEventListener("click", e => { if(moved){ e.preventDefault(); moved=false; } }, true);
+
+/* ---- العدّاد التنازلي ---- */
+const pad=n=>String(n).padStart(2,"0"), cd={d:$("#cdD"),h:$("#cdH"),m:$("#cdM"),s:$("#cdS")};
+function setCd(el,v){ if(el.textContent!==v){ el.textContent=v; el.classList.remove("flip"); void el.offsetWidth; el.classList.add("flip"); } }
+function tick(){ let s=Math.max(0,Math.floor((new Date(OFFER_END)-new Date())/1000));
+  setCd(cd.d,pad(Math.floor(s/86400))); s%=86400; setCd(cd.h,pad(Math.floor(s/3600))); s%=3600; setCd(cd.m,pad(Math.floor(s/60))); setCd(cd.s,pad(s%60)); }
+tick(); setInterval(tick,1000);
+
+/* ---- الأسئلة الشائعة ---- */
+$$(".faq-q").forEach(q => q.addEventListener("click", () => {
+  const item=q.parentElement, open=!item.classList.contains("open");
+  $$(".faq-item").forEach(i=>{ i.classList.remove("open"); i.querySelector(".faq-q").setAttribute("aria-expanded","false"); });
+  if(open){ item.classList.add("open"); q.setAttribute("aria-expanded","true"); }
+}));
+
+/* ---- النشرة البريدية (واجهة فقط) ---- */
+$("#newsForm").addEventListener("submit", e => { e.preventDefault(); $("#newsMsg").textContent="شكرًا لك! تم تسجيل بريدك ✓"; e.target.reset(); });
+
+/* ---- قائمة الجوال ---- */
+const menuBtn=$("#menuBtn"), nav=$("#nav");
+menuBtn.addEventListener("click", () => { const o=nav.classList.toggle("open"); header.classList.toggle("menu-open",o); menuBtn.setAttribute("aria-expanded",o); document.body.style.overflow=o?"hidden":""; });
+navLinks.forEach(a => a.addEventListener("click", () => { nav.classList.remove("open"); header.classList.remove("menu-open"); menuBtn.setAttribute("aria-expanded","false"); document.body.style.overflow=""; }));
+</script>
+</body>
+</html>
